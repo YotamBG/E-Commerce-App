@@ -1,53 +1,81 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const express = require('express');
-const app = express();
+const session = require('express-session');
 const db = require('./db');
-const port = 3000;
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({
-  extended: true
+var passport = require('passport');
+const bcrypt = require('bcrypt');
+const initializePassport = require('./passport-config');
+
+
+const app = express();
+const port = 3000;
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.SESSION_SECRET
 }));
+initializePassport(passport, db);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`)
+});
 
 app.get('/', (req, res) => {
   res.send('Welcome to the e-commerce application!');
 });
 
-// app.get('/:id', (req, res, next) => {
-//   db.query('SELECT * FROM users WHERE user_id = $1', [req.params.id], (err, result) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.send(result.rows[0]);
-//   })
-// });
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-});
-
-
-app.post('/users/register', (req, res, next) => {
+app.post('/users/register', async (req, res, next) => {
   const { username, password } = req.body;
+  var hashedpassword = await bcrypt.hash(password, 10);
   db.query('SELECT * FROM users WHERE username = $1', [username], (err, result) => {
     if (err) {
       return next(err);
     }
     if (result.rows.length == 0) {
-      db.query('INSERT INTO users (username, password) VALUES ($1, $2);', [username, password], (err, result) => {
+      db.query('INSERT INTO users (username, password) VALUES ($1, $2);', [username, hashedpassword], (err, result) => {
         if (err) {
           return next(err);
         }
-        res.send('success!');
+        res.send('Registered successfully!');
       })
     } else {
-      res.send('username already used!');
+      res.send('Username already used!');
     }
   })
 });
 
 
+app.post("/users/login",
+  passport.authenticate("local", { failureRedirect: "/users/login" }),
+  (req, res) => {
+    res.redirect("/users/profile");
+  }
+);
 
-// GET, POST, PUT, DELETE
+
+app.get('/users/profile', (req, res, next) => {
+  console.log('Profile of ', req.user);
+  res.send('Hello ' + req.user.username + '!');
+});
+
+
+app.post('/users/logout', function (req, res) {
+  req.logout(function (err) {
+    if (err) return next(err);
+    res.redirect('/');
+  });
+});
+
+// GET, POST, PUT, DELETE enpoints plan
 
 // /products (get all)
 // /products/new-product

@@ -29,4 +29,5 @@ function initialize(passport, db) {
     });
 }
 
+
 module.exports = initialize;

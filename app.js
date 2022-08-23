@@ -63,7 +63,7 @@ app.post("/users/login",
 );
 
 
-app.get('/users/profile', (req, res, next) => {
+app.get('/users/profile', checkAuthenticated, (req, res, next) => {
   console.log('Profile of ', req.user);
   res.send('Hello ' + req.user.username + '!');
 });
@@ -111,7 +111,7 @@ app.get('/products', (req, res, next) => {
 });
 
 app.post('/products/new-product', (req, res, next) => {
-  const { name, price, category} = req.body;
+  const { name, price, category } = req.body;
   db.query('INSERT INTO products (name, price, category) VALUES ($1, $2, $3);', [name, price, category], (err, result) => {
     if (err) {
       return next(err);
@@ -165,6 +165,72 @@ app.post('/products/delete-product/:productId', async (req, res, next) => {
 
 
 
+app.post('/users/:username/update', checkAuthenticated, async (req, res, next) => {
+  const old_username = req.params.username;
+  const new_username = req.body.username;
+  const password = req.body.password;
+
+  if(old_username != req.user.username){
+    return res.send('Not authorised to update other users!');
+  }
+
+  var hashedpassword = await bcrypt.hash(password, 10);
+  db.query('SELECT * FROM users WHERE username = $1', [old_username], (err, result) => {
+    if (err) {
+      return next(err);
+    }
+    if (result.rows.length != 0) {
+      db.query('UPDATE users SET username = $1, password = $2 WHERE username = $3;', [new_username, hashedpassword, old_username], (err, result) => {
+        if (err) {
+          return next(err);
+        }
+        res.send('Updated successfully!');
+      })
+    } else {
+      res.send('No user found!');
+    }
+  })
+});
+
+
+app.post('/users/:username/delete', checkAuthenticated, async (req, res, next) => {
+  const {username} = req.params;
+
+  if(username != req.user.username){
+    return res.send('Not authorised to update other users!');
+  }
+
+  db.query('SELECT * FROM users WHERE username = $1', [username], (err, result) => {
+    if (err) {
+      return next(err);
+    }
+    if (result.rows.length != 0) {
+      req.logout(function (err) {
+        if (err) return next(err);
+      });
+      db.query('DELETE FROM users WHERE username=$1;', [username], (err, result) => {
+        if (err) {
+          return next(err);
+        }
+        res.send('Deleted successfully!');
+      })
+    } else {
+      res.send('No user found!');
+    }
+  })
+});
+
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next()
+  }
+  res.send('Not logged in!');
+  // res.redirect('/users/login');
+}
+
+
+
 // GET, POST, PUT, DELETE enpoints plan
 
 // /products (get all) V
@@ -174,15 +240,17 @@ app.post('/products/delete-product/:productId', async (req, res, next) => {
 
 
 // /users/register V
-// /users/login -> return cartId (to be saved in local storage) VX
-// /users/logout -> delete all related carts VX
-// /users/:username/update
-// /users/:username/delete -> delete all related carts
+// /users/login V (-> return cartId to be saved in local storage)
+// /users/logout V (-> delete all related carts)
+// /users/:username/update V
+// /users/:username/delete V (-> delete all related carts)
 // /users/:username/profile V
 
 
 // /carts/:cartId/new-item/:productId
 // /carts/:cartId/remove-item/:productId
 // /carts/:cartId/clear-cart
+// /carts/:cartId/checkout (-> delete cart)
 
-// /orders/newOrder/:cartId -> delete cart
+// /orders/
+// /orders/:orderId

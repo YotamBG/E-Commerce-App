@@ -37,6 +37,8 @@ const users = require('./routers/users');
 app.use('/users', users);
 const products = require('./routers/products');
 app.use('/products', products);
+const cart = require('./routers/cart');
+app.use('/cart', cart);
 
 
 
@@ -49,17 +51,20 @@ app.use('/products', products);
 
 
 // /users/register V
-// /users/login V (-> return cartId to be saved in local storage)
-// /users/logout V (-> delete all related carts)
+// /users/login V
+// /users/logout V
 // /users/:username/update V
 // /users/:username/delete V (-> delete all related carts)
 // /users/:username/profile V
 
 
-// /carts/:cartId/new-item/:productId
-// /carts/:cartId/remove-item/:productId
-// /carts/:cartId/clear-cart
-// /carts/:cartId/checkout (-> delete cart)
+// /cart/ V
+// /cart/new-item/:productId V
+// /cart/remove-item/:productId V
+// /cart/clear-cart V
+
+// /cart/checkout (-> delete cart)
+
 
 // /orders/
 // /orders/:orderId

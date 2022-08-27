@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../utils/db');
 const checkAuthenticated = require('../utils/checkAuthenticated');
+const deleteCart = require('../utils/deleteCart');
 
 
 
@@ -80,10 +81,13 @@ router.post('/:username/update', checkAuthenticated, async (req, res, next) => {
 
 router.post('/:username/delete', checkAuthenticated, async (req, res, next) => {
     const { username } = req.params;
+    const { user_id } = req.user;
 
     if (username != req.user.username) {
         return res.send('Not authorised to update other users!');
     }
+
+    await deleteCart(db, user_id, next);
 
     db.query('SELECT * FROM users WHERE username = $1', [username], (err, result) => {
         if (err) {
@@ -97,12 +101,13 @@ router.post('/:username/delete', checkAuthenticated, async (req, res, next) => {
                 if (err) {
                     return next(err);
                 }
-                res.send('Deleted successfully!');
             })
         } else {
             res.send('No user found!');
         }
-    })
+    });
+
+    res.send('User deleted successfully!');
 });
 
 

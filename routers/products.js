@@ -50,7 +50,7 @@ router.post('/new-product', (req, res, next) => {
 });
 
 
-router.post('/update-product/:productId', async (req, res, next) => {
+router.post('/update-product/:productId', async (req, res, next) => { //use put instead
     const product_id = req.params.productId;
     const { name, price, category } = req.body;
     console.log({ "product_id": product_id, "name": name, "price": price, "category": category });

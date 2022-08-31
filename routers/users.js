@@ -51,7 +51,7 @@ router.post('/logout', function (req, res) {
 });
 
 
-router.post('/:username/update', checkAuthenticated, async (req, res, next) => {
+router.post('/:username/update', checkAuthenticated, async (req, res, next) => { //use put instead
     const old_username = req.params.username;
     const new_username = req.body.username;
     const password = req.body.password;

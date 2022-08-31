@@ -1,4 +1,5 @@
 const deleteCart = async (db, user_id, next) => {
+    console.log('deleting cart...');
     db.query('SELECT cart_id FROM carts WHERE user_id=$1;', [user_id], (err, result) => {
         if (result.rows.length != 0) {
             cartId = result.rows[0].cart_id;
@@ -7,7 +8,6 @@ const deleteCart = async (db, user_id, next) => {
                     return next(err);
                 }
             })
-
             db.query('DELETE FROM carts WHERE user_id = $1;', [user_id], (err, result) => {
                 if (err) {
                     return next(err);

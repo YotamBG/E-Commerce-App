@@ -39,7 +39,8 @@ const products = require('./routers/products');
 app.use('/products', products);
 const cart = require('./routers/cart');
 app.use('/cart', cart);
-
+const orders = require('./routers/orders');
+app.use('/orders', orders);
 
 
 // GET, POST, PUT, DELETE enpoints plan
@@ -63,8 +64,8 @@ app.use('/cart', cart);
 // /cart/remove-item/:productId V
 // /cart/clear-cart V
 
-// /cart/checkout (-> delete cart)
+// /cart/checkout (-> delete cart) V
 
 
-// /orders/
-// /orders/:orderId
+// /orders/ V
+// /orders/:orderId V

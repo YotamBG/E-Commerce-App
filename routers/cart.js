@@ -128,7 +128,7 @@ router.post('/new-item/:productId', (req, res, next) => {
 
 
 
-router.post('/remove-item/:productId', (req, res, next) => { //use delete insted?
+router.delete('/remove-item/:productId', (req, res, next) => {
     const { cartId } = req.user;
     const { productId } = req.params;
 
@@ -157,7 +157,7 @@ router.post('/remove-item/:productId', (req, res, next) => { //use delete insted
 
 
 
-router.post('/clear-cart', (req, res, next) => { // just /clear
+router.post('/clear', (req, res, next) => {
     const { cartId } = req.user;
 
     db.query('DELETE FROM products_in_cart WHERE cart_id = $1;', [cartId], (err, result) => {

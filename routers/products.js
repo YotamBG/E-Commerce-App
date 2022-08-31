@@ -19,7 +19,7 @@ router.get('/:productId', (req, res, next) => {
 router.get('/', (req, res, next) => {
     const category = req.query.category;
     if (category) {
-        db.query('SELECT * FROM products WHERE category = $1', [category], (err, result) => {
+        db.query('SELECT * FROM products WHERE category = $1 ORDER BY product_id;', [category], (err, result) => {
             if (err) {
                 return next(err);
             }
@@ -27,7 +27,7 @@ router.get('/', (req, res, next) => {
             res.send(result.rows);
         })
     } else {
-        db.query('SELECT * FROM products', [], (err, result) => {
+        db.query('SELECT * FROM products ORDER BY product_id;', [], (err, result) => {
             if (err) {
                 return next(err);
             }
@@ -50,7 +50,7 @@ router.post('/new-product', (req, res, next) => {
 });
 
 
-router.post('/update-product/:productId', async (req, res, next) => { //use put instead
+router.put('/update-product/:productId', async (req, res, next) => {
     const product_id = req.params.productId;
     const { name, price, category } = req.body;
     console.log({ "product_id": product_id, "name": name, "price": price, "category": category });

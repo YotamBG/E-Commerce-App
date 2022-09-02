@@ -1,6 +1,6 @@
-// if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
-// }
+}
 
 const express = require('express');
 const session = require('express-session');
@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000;
 app.use(session({
   resave: false,
   saveUninitialized: false,
-  secret: process.env.SESSION_SECRET
+  secret: "process.env.SESSION_SECRET"
 }));
 initializePassport(passport, db);
 app.use(passport.initialize());

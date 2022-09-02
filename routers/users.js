@@ -6,8 +6,45 @@ const db = require('../utils/db');
 const checkAuthenticated = require('../utils/checkAuthenticated');
 const deleteCart = require('../utils/deleteCart');
 
+/**
+ * @swagger
+ * definitions:
+ *   User:
+ *     properties:
+ *       username:
+ *         type: string
+ *       password:
+ *         type: string
+ *         format: password
+ *     required:
+ *       - username
+ *       - password
+ */
 
 
+
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     tags:
+ *       - Users
+ *     description: Creates a new user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: user
+ *         description: User details
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       201:
+ *         description: Successfully registered
+ *       400:
+ *         description: Username already used
+ */
 router.post('/register', async (req, res, next) => {
     const { username, password } = req.body;
     var hashedpassword = await bcrypt.hash(password, 10);
@@ -20,15 +57,37 @@ router.post('/register', async (req, res, next) => {
                 if (err) {
                     return next(err);
                 }
-                res.send('Registered successfully!');
+                res.status(201).send('Registered successfully!');
             })
         } else {
-            res.send('Username already used!');
+            res.status(400).send('Username already used!');
         }
     })
 });
 
 
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     tags:
+ *       - Users
+ *     description: Logs in a user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: user
+ *         description: User details
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       201:
+ *         description: Successfully logged in
+ *       500:
+ *         description: Wrong username or password
+ */
 router.post("/login",
     passport.authenticate("local", { failureRedirect: "/login" }),
     (req, res) => {
@@ -37,12 +96,42 @@ router.post("/login",
 );
 
 
+/**
+ * @swagger
+ * /users/profile:
+ *   get:
+ *     tags:
+ *       - Users
+ *     description: Displays a user's profile
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       201:
+ *         description: A simple string response
+ *         schema:
+ *           type: string
+ *           example: "Hello Jake!"
+ *       401:
+ *         description: Not logged in
+ */
 router.get('/profile', checkAuthenticated, (req, res, next) => {
     console.log('Profile of ', req.user);
-    res.send('Hello ' + req.user.username + '!');
+    res.status(200).send('Hello ' + req.user.username + '!');
 });
 
-
+/**
+ * @swagger
+ * /users/logout:
+ *   post:
+ *     tags:
+ *       - Users
+ *     description: Logs out a user
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ */
 router.post('/logout', function (req, res) {
     req.logout(function (err) {
         if (err) return next(err);
@@ -50,14 +139,42 @@ router.post('/logout', function (req, res) {
     });
 });
 
-
+/**
+ * @swagger
+ * /users/{username}/update:
+ *   put:
+ *     tags:
+ *       - Users
+ *     description: Updates a user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: username
+ *         description: A user's username
+ *         in: path
+ *         required: true
+ *         type: string
+ *       - name: user
+ *         description: User details
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       202:
+ *         description: Successfully updated
+ *       404:
+ *         description: User not found
+ *       403:
+ *         description: Not authorised to update other users
+ */
 router.put('/:username/update', checkAuthenticated, async (req, res, next) => {
     const old_username = req.params.username;
     const new_username = req.body.username;
     const password = req.body.password;
 
     if (old_username != req.user.username) {
-        return res.send('Not authorised to update other users!');
+        return res.status(403).send('Not authorised to update other users!');
     }
 
     var hashedpassword = await bcrypt.hash(password, 10);
@@ -70,21 +187,43 @@ router.put('/:username/update', checkAuthenticated, async (req, res, next) => {
                 if (err) {
                     return next(err);
                 }
-                res.send('Updated successfully!');
+                res.status(200).send('Updated successfully!');
             })
         } else {
-            res.send('No user found!');
+            res.status(404).send('No user found!');
         }
     })
 });
 
-
-router.post('/:username/delete', checkAuthenticated, async (req, res, next) => {
+/**
+ * @swagger
+ * /users/{username}/delete:
+ *   delete:
+ *     tags:
+ *       - Users
+ *     description: Deletes a user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: username
+ *         description: A user's username
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Deleted successfully
+ *       404:
+ *         description: User not found
+ *       403:
+ *         description: Not authorised to delete other users
+ */
+router.delete('/:username/delete', checkAuthenticated, async (req, res, next) => {
     const { username } = req.params;
     const { user_id } = req.user;
 
     if (username != req.user.username) {
-        return res.send('Not authorised to update other users!');
+        return res.status(403).send('Not authorised to delete other users!');
     }
 
     await deleteCart(db, user_id, next);
@@ -103,11 +242,11 @@ router.post('/:username/delete', checkAuthenticated, async (req, res, next) => {
                 }
             })
         } else {
-            res.send('No user found!');
+            res.status(404).send('No user found!');
         }
     });
 
-    res.send('User deleted successfully!');
+    res.status(200).send('User deleted successfully!');
 });
 
 

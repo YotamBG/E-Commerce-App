@@ -22,14 +22,31 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "E-Commerce App",
+      description: "This is an e-commerce application REST API",
+      contact: {
+        name: "Yotam Ben-Gera",
+      },
+      servers: ["http://localhost:3000/"]
+    }
+  },
+  apis: ["server.js", "./routers/*.js"]
+};
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 });
 
 app.get('/', (req, res) => {
-  res.send('Welcome to the e-commerce application!');
+  res.status(200).send('Welcome to the e-commerce application!');
 });
 
 

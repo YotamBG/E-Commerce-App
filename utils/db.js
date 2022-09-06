@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
 
-const devConfig = `postgresql://${postgres}:${postgres}@${localhost}:${5432}/${E - Commerce - App}`;
+const devConfig = `postgresql://postgres:postgres@localhost:5432/E-Commerce-App`;
 
 const proConfig = process.env.DATABASE_URL; //heroku addons
 

@@ -33,7 +33,7 @@ const swaggerOptions = {
       contact: {
         name: "Yotam Ben-Gera",
       },
-      servers: ["http://localhost:3000/"]
+      servers: ["/"] //["http://localhost:3000/"]
     }
   },
   apis: ["server.js", "./routers/*.js"]

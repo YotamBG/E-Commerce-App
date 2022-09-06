@@ -1,15 +1,15 @@
 const { Pool } = require('pg');
 
+const devConfig = `postgresql://${postgres}:${postgres}@${localhost}:${5432}/${E - Commerce - App}`;
+
+const proConfig = process.env.DATABASE_URL; //heroku addons
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,	// use DATABASE_URL environment variable from Heroku app 
+  connectionString:
+    process.env.NODE_ENV === "production" ? proConfig : devConfig,
   ssl: {
     rejectUnauthorized: false // don't check for SSL cert
   }
-  // user: "postgres",
-  // password: "postgres",
-  // host: "localhost",
-  // port: 5432,
-  // database: "E-Commerce-App",
 });
 
 module.exports = {

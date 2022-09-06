@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000;
 app.use(session({
   resave: false,
   saveUninitialized: false,
-  secret: "process.env.SESSION_SECRET"
+  secret: "secret"
 }));
 initializePassport(passport, db);
 app.use(passport.initialize());
@@ -33,7 +33,7 @@ const swaggerOptions = {
       contact: {
         name: "Yotam Ben-Gera",
       },
-      servers: ["/"] //["http://localhost:3000/"]
+      servers: ["/", "http://localhost:3000/"]
     }
   },
   apis: ["server.js", "./routers/*.js"]

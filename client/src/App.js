@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { } from 'react-bootstrap';
 import {
@@ -7,20 +6,25 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { NavBar } from './components/NavBar';
+import { Cart } from './pages/Cart';
+import { Products } from './pages/Products';
+import { Profile } from './pages/Profile';
+import { Orders } from './pages/Orders';
+import { Home } from './pages/Home';
+
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <nav>
-          <Link to="/">home</Link> |{" "}
-          <Link to="1">1</Link> |{" "}
-          <Link to="2">2</Link>
-        </nav>
+        <NavBar/>
         <Routes>
-          <Route path="/" element={<p>home!</p>} />
-          <Route path="1" element={<p>1</p>} />
-          <Route path="2" element={<p>2</p>} />
+          <Route path="/" element={<Home/>} />
+          <Route path="cart" element={<Cart/>} />
+          <Route path="products" element={<Products/>} />
+          <Route path="profile" element={<Profile/>} />
+          <Route path="orders" element={<Orders/>} />
         </Routes>
       </BrowserRouter>
     </div>

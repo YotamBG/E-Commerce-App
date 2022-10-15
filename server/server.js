@@ -8,6 +8,7 @@ const db = require('./utils/db');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const initializePassport = require('./utils/passport-config');
+var cors = require('cors');
 
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 

@@ -57,7 +57,10 @@ router.post('/register', async (req, res, next) => {
                 if (err) {
                     return next(err);
                 }
-                res.status(201).send('Registered successfully!');
+
+                passport.authenticate('local')(req, res, function () {
+                    res.status(201).send('Registered successfully!');
+                });
             })
         } else {
             res.status(400).send('Username already used!');
@@ -91,7 +94,8 @@ router.post('/register', async (req, res, next) => {
 router.post("/login",
     passport.authenticate("local", { failureRedirect: "/login" }),
     (req, res) => {
-        res.redirect("/users/profile");
+        res.send('logged in ' + req.user.username);
+        // res.redirect("/users/profile");
     }
 );
 
@@ -116,7 +120,7 @@ router.post("/login",
  */
 router.get('/profile', checkAuthenticated, (req, res, next) => {
     console.log('Profile of ', req.user);
-    res.status(200).send('Hello ' + req.user.username + '!');
+    res.status(200).send({'message': `Hello ${req.user.username}!`});
 });
 
 /**

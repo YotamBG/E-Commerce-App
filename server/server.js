@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const initializePassport = require('./utils/passport-config');
 var cors = require('cors');
+require("./utils/auth-config");
 
 
 const app = express();
@@ -63,6 +64,8 @@ const cart = require('./routers/cart');
 app.use('/cart', cart);
 const orders = require('./routers/orders');
 app.use('/orders', orders);
+const auth = require('./routers/auth');
+app.use('/auth', auth);
 
 
 // GET, POST, PUT, DELETE enpoints plan

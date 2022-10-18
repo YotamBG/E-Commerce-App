@@ -13,21 +13,41 @@ import { Orders } from './pages/Orders';
 import { Home } from './pages/Home';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
+import { useEffect, useState } from "react";
 
 
 function App() {
+  const [user, setUser] = useState({});
+
+  const getUser = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/users/profile", { credentials: 'include' });
+      const jsonData = await response.json();
+      console.log(jsonData);
+      if (response.status == 200) {
+        setUser(jsonData.user);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar/>
+        <NavBar user={user} />
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="cart" element={<Cart/>} />
-          <Route path="products" element={<Products/>} />
-          <Route path="profile" element={<Profile/>} />
-          <Route path="orders" element={<Orders/>} />
-          <Route path="register" element={<Register/>} />
-          <Route path="login" element={<Login/>} />
+          <Route path="/" element={<Home />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="products" element={<Products />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>

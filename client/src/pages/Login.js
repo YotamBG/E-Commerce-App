@@ -45,8 +45,12 @@ export function Login() {
           </Button>
         </Form>
         <br />
-          <img src='https://cdn-icons-png.flaticon.com/512/145/145804.png' style={{ width: '50px', margin: '20px' }}/>
-          <img src='https://cdn-icons-png.flaticon.com/512/145/145802.png' style={{ width: '50px', margin: '20px' }}/>
+        <a href="http://localhost:3000/auth/google">
+          <img src='https://cdn-icons-png.flaticon.com/512/145/145804.png' style={{ width: '50px', margin: '20px' }} />
+        </a>
+        <a href="http://localhost:3000/auth/facebook">
+          <img src='https://cdn-icons-png.flaticon.com/512/145/145802.png' style={{ width: '50px', margin: '20px' }} />
+        </a>
         <br /><br /><br />
         <Link to="/register" className='btn btn-success'>Register instead</Link>
       </Container>

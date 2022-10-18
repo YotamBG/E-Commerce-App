@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
 export function Profile() {
-  const [username, setUsername] = useState('');
+  const [user, setUser] = useState({});
 
-  const getUsername = async () => {
+  const getUser = async () => {
     try {
       const response = await fetch("http://localhost:3000/users/profile", { credentials: 'include' });
       const jsonData = await response.json();
       console.log(jsonData);
-      setUsername(jsonData.message);
+      setUser(jsonData.user);
     } catch (err) {
       console.error(err.message);
     }
@@ -32,14 +32,14 @@ export function Profile() {
   };
 
   useEffect(() => {
-    getUsername();
+    getUser();
   }, []);
 
   return (
     <div>
       <h1>Profile</h1>
-      <p>{username}</p>
-      {/* <Link to="/" className='btn btn-danger' onClick={()=>{logout()}}>Logout</Link> */}
+      <img src={user.img} />
+      <p>{user.username}</p>
       <Button variant="danger" onClick={() => {logout()}}>Logout</Button>
     </div>
   );

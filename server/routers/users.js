@@ -120,7 +120,7 @@ router.post("/login",
  */
 router.get('/profile', checkAuthenticated, (req, res, next) => {
     console.log('Profile of ', req.user);
-    res.status(200).send({'message': `Hello ${req.user.username}!`});
+    res.status(200).send({'user': req.user});
 });
 
 /**

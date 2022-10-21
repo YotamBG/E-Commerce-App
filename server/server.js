@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const initializePassport = require('./utils/passport-config');
 var cors = require('cors');
+var fileUpload = require('express-fileupload');
 require("./utils/auth-config");
 
 
@@ -28,6 +29,7 @@ app.use(cors({
   origin: "http://localhost:3001",
   credentials: true
 }));
+app.use(fileUpload());
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 

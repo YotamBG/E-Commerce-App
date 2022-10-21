@@ -13,6 +13,8 @@ import { Orders } from './pages/Orders';
 import { Home } from './pages/Home';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
+import { ProductUpload } from './pages/ProductUpload';
+import { ProductDetails } from './pages/ProductDetails';
 import { useEffect, useState } from "react";
 
 
@@ -48,6 +50,8 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
+          <Route path="productUpload" element={<ProductUpload />} />
+          <Route path="productDetails/:id" element={<ProductDetails />} />
         </Routes>
       </BrowserRouter>
     </div>

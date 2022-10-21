@@ -11,6 +11,7 @@ export function NavBar({user}) {
         <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
           <Nav className="justify-content-end">
             <Link to="products" className='nav-link'>Products</Link>
+            {/* <Link to="productUpload" className='nav-link'>ProductUpload</Link> // for admin access*/}
             <Link to="cart" className='nav-link'>Cart</Link>
             <Link to="orders" className='nav-link'>Orders</Link>
             {user.user_id?

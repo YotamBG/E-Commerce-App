@@ -49,7 +49,7 @@ const db = require('../utils/db');
  */
 router.get('/:productId', (req, res, next) => {
     const product_id = req.params.productId;
-    db.query('SELECT * FROM products WHERE product_id = $1', [product_id], (err, result) => {
+    db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img FROM products WHERE product_id = $1", [product_id], (err, result) => {
         if (err) {
             return next(err);
         }
@@ -138,8 +138,9 @@ router.get('/', (req, res, next) => {
  *         description: Successfully created
  */
 router.post('/new-product', (req, res, next) => {
-    const { name, price, category } = req.body;
-    db.query('INSERT INTO products (name, price, category) VALUES ($1, $2, $3);', [name, price, category], (err, result) => {
+    const {name, price, category} = JSON.parse(req.body.details);
+    const img = req.files.img;
+    db.query('INSERT INTO products (name, price, category, img) VALUES ($1, $2, $3, $4);', [name, Number(price), category, img.data], (err, result) => {
         if (err) {
             return next(err);
         }

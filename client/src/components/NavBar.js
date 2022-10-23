@@ -4,13 +4,13 @@ import React, { Fragment } from 'react';
 
 export function NavBar({user}) {
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" className='mb-4'>
       <Container>
         <Navbar.Brand href="/">E-Commerce App</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
           <Nav className="justify-content-end">
-            <Link to="products" className='nav-link'>Products</Link>
+            <Link to="productList" className='nav-link'>Products</Link>
             {/* <Link to="productUpload" className='nav-link'>ProductUpload</Link> // for admin access*/}
             <Link to="cart" className='nav-link'>Cart</Link>
             <Link to="orders" className='nav-link'>Orders</Link>

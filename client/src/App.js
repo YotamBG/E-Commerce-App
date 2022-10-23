@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { NavBar } from './components/NavBar';
 import { Cart } from './pages/Cart';
-import { Products } from './pages/Products';
+import { ProductList } from './pages/ProductList';
 import { Profile } from './pages/Profile';
 import { Orders } from './pages/Orders';
 import { Home } from './pages/Home';
@@ -45,7 +45,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="products" element={<Products />} />
+          <Route path="productList" element={<ProductList />} />
           <Route path="profile" element={<Profile />} />
           <Route path="orders" element={<Orders />} />
           <Route path="register" element={<Register />} />

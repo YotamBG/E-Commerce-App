@@ -8,6 +8,7 @@ export function ProductUpload() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -18,7 +19,7 @@ export function ProductUpload() {
     const formData = new FormData();
 
     formData.append('img', selectedFile);
-    formData.append('details', JSON.stringify({ 'name': name, 'price': price, 'category': category }));
+    formData.append('details', JSON.stringify({ 'name': name, 'price': price, 'category': category, 'description': description }));
 
     fetch(
       'http://localhost:3000/products/new-product',
@@ -45,6 +46,10 @@ export function ProductUpload() {
       <br />
       <label className="form-label">Name:</label>
       <input className='form-control' type="text" value={name} onChange={e => setName(e.target.value)} />
+
+      <br />
+      <label className="form-label">description:</label>
+      <input className='form-control' type="text" value={description} onChange={e => setDescription(e.target.value)} />
 
       <br />
       <label className="form-label">Price:</label>

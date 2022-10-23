@@ -49,7 +49,7 @@ const db = require('../utils/db');
  */
 router.get('/:productId', (req, res, next) => {
     const product_id = req.params.productId;
-    db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img FROM products WHERE product_id = $1", [product_id], (err, result) => {
+    db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img, description FROM products WHERE product_id = $1", [product_id], (err, result) => {
         if (err) {
             return next(err);
         }
@@ -88,7 +88,7 @@ router.get('/:productId', (req, res, next) => {
 router.get('/', (req, res, next) => {
     const category = req.query.category;
     if (category) {
-        db.query('SELECT * FROM products WHERE category = $1 ORDER BY product_id;', [category], (err, result) => {
+        db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img, description FROM products WHERE category = $1 ORDER BY product_id;", [category], (err, result) => {
             if (err) {
                 return next(err);
             }
@@ -96,7 +96,7 @@ router.get('/', (req, res, next) => {
             res.status(200).send(result.rows);
         })
     } else {
-        db.query('SELECT * FROM products ORDER BY product_id;', [], (err, result) => {
+        db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img, description FROM products ORDER BY product_id;", [], (err, result) => {
             if (err) {
                 return next(err);
             }
@@ -138,13 +138,13 @@ router.get('/', (req, res, next) => {
  *         description: Successfully created
  */
 router.post('/new-product', (req, res, next) => {
-    const {name, price, category} = JSON.parse(req.body.details);
-    const img = req.files.img;
-    db.query('INSERT INTO products (name, price, category, img) VALUES ($1, $2, $3, $4);', [name, Number(price), category, img.data], (err, result) => {
+    const {name, price, category, description} = JSON.parse(req.body.details);
+    const img = (req.files?req.files.img:{data:''});
+    db.query('INSERT INTO products (name, price, category, img, description) VALUES ($1, $2, $3, $4, $5);', [name, Number(price), category, img.data || '', description], (err, result) => {
         if (err) {
             return next(err);
         }
-        console.log('New product added: ', { "name": name, "price": price, "category": category });
+        console.log('New product added: ', { "name": name, "price": price, "category": category, "description": description });
         res.status(201).send('Product added successfully!');
     })
 });

@@ -107,11 +107,12 @@ router.get('/', (req, res, next) => {
     const { cartId, total } = req.user;
 
     db.query(`
-            SELECT products.product_id,	products.name,	products.price,	products.category, products_in_cart.quantity
+            SELECT products.product_id,	products.name,	products.price,	products.category, encode(products.img, 'base64') AS img, products_in_cart.quantity
             FROM products_in_cart
             JOIN products
                 ON products_in_cart.product_id = products.product_id
-            WHERE cart_id=$1;`,
+            WHERE cart_id=$1
+            ORDER BY products.name;`,
         [cartId],
         (err, result) => {
             if (err) {
@@ -159,7 +160,7 @@ router.post('/new-item/:productId', (req, res, next) => {
                             return next(err);
                         }
                         console.log('New product added: ', { "product_id": productId, "cartId": cartId });
-                        res.status(200).send('Product added to cart successfully!');
+                        res.status(200).send({ message: 'Product added to cart successfully!'});
                     });
                 } else {
                     res.status(404).send('Product doesn`t exists');
@@ -170,7 +171,7 @@ router.post('/new-item/:productId', (req, res, next) => {
                 if (err) {
                     return next(err);
                 }
-                res.status(200).send('Product added to cart successfully! (increased amount)');
+                res.status(200).send({ message: 'Product added to cart successfully! (increased amount)'});
             })
         }
     });
@@ -211,14 +212,14 @@ router.delete('/remove-item/:productId', (req, res, next) => {
                     if (err) {
                         return next(err);
                     }
-                    res.status(200).send('Product removed from cart successfully!');
+                    res.status(200).send({ message: 'Product removed from cart successfully!'});
                 })
             } else {
                 db.query('UPDATE products_in_cart SET quantity = quantity-1 WHERE cart_id = $1 AND product_id = $2;', [cartId, productId], (err, result) => {
                     if (err) {
                         return next(err);
                     }
-                    res.status(200).send('Product removed from cart successfully! (decreased amount)');
+                    res.status(200).send({ message: 'Product removed from cart successfully! (decreased amount)'});
                 })
             }
         }

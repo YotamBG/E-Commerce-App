@@ -68,31 +68,3 @@ const orders = require('./routers/orders');
 app.use('/orders', orders);
 const auth = require('./routers/auth');
 app.use('/auth', auth);
-
-
-// GET, POST, PUT, DELETE enpoints plan
-
-// /products (get all) V
-// /products/new-product V
-// /products/update-product/:productId V
-// /products/delete-product/:productId V
-
-
-// /users/register V
-// /users/login V
-// /users/logout V
-// /users/:username/update V
-// /users/:username/delete V (-> delete all related carts)
-// /users/:username/profile V
-
-
-// /cart/ V
-// /cart/new-item/:productId V
-// /cart/remove-item/:productId V
-// /cart/clear-cart V
-
-// /cart/checkout (-> delete cart) V
-
-
-// /orders/ V
-// /orders/:orderId V

@@ -15,7 +15,7 @@ const deleteCart = async (db, user_id, next) => {
             });
         }
     });
-    return next();
+    // return next();
 };
 
 

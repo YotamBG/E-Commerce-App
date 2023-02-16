@@ -63,7 +63,7 @@ router.post('/register', async (req, res, next) => {
                 });
             })
         } else {
-            res.status(400).send('Username already used!');
+            res.status(400).send({error: 'Username already used!'});
         }
     })
 });
@@ -178,7 +178,7 @@ router.put('/:username/update', checkAuthenticated, async (req, res, next) => {
     const password = req.body.password;
 
     if (old_username != req.user.username) {
-        return res.status(403).send('Not authorised to update other users!');
+        return res.status(403).send({error: 'Not authorised to update other users!'});
     }
 
     var hashedpassword = await bcrypt.hash(password, 10);
@@ -194,7 +194,7 @@ router.put('/:username/update', checkAuthenticated, async (req, res, next) => {
                 res.status(200).send('Updated successfully!');
             })
         } else {
-            res.status(404).send('No user found!');
+            res.status(404).send({error: 'No user found!'});
         }
     })
 });
@@ -227,7 +227,7 @@ router.delete('/:username/delete', checkAuthenticated, async (req, res, next) =>
     const { user_id } = req.user;
 
     if (username != req.user.username) {
-        return res.status(403).send('Not authorised to delete other users!');
+        return res.status(403).send({error: 'Not authorised to delete other users!'});
     }
 
     await deleteCart(db, user_id, next);
@@ -246,7 +246,7 @@ router.delete('/:username/delete', checkAuthenticated, async (req, res, next) =>
                 }
             })
         } else {
-            res.status(404).send('No user found!');
+            res.status(404).send({error: 'No user found!'});
         }
     });
 

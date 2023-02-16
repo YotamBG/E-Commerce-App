@@ -61,7 +61,7 @@ const checkAuthenticated = require('../utils/checkAuthenticated');
  *       404:
  *         description: Order not found
  */
-router.get('/:orderId', async (req, res, next) => {
+router.get('/:orderId', async (req, res, next) => { //use user_id instead
     const order_id = req.params.orderId;
     
     const items = (await db.query(`
@@ -79,12 +79,12 @@ router.get('/:orderId', async (req, res, next) => {
         console.log('Showing one order');
         var orderView = { "Details": result.rows[0], "Items": items };
         if(result.rows.length == 0){
-            return res.status(404).send("No order found");
+            return res.status(404).send({error: "No order found"});
         }
         if(result.rows[0].username == req.user.username){
             return res.status(200).send(orderView);
         }else{
-            return res.status(403).send("Not allowed to view another user's order");
+            return res.status(403).send({error: "Not allowed to view another user's order"});
         }
     })
 

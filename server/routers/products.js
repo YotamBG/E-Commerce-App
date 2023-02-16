@@ -49,7 +49,8 @@ const db = require('../utils/db');
  */
 router.get('/:productId', (req, res, next) => {
     const product_id = req.params.productId;
-    db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img, description FROM products WHERE product_id = $1", [product_id], (err, result) => {
+    // db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img, description FROM products WHERE product_id = $1", [product_id], (err, result) => { // img column type = bytea
+    db.query("SELECT product_id, name, price, category, img, description FROM products WHERE product_id = $1", [product_id], (err, result) => {
         if (err) {
             return next(err);
         }
@@ -57,7 +58,7 @@ router.get('/:productId', (req, res, next) => {
         if (result.rows.length != 0) {
             res.status(200).send(result.rows[0]);
         } else {
-            res.status(404).send("Product not found!");
+            res.status(404).send({ error: "Product not found!" });
         }
     })
 });
@@ -88,7 +89,7 @@ router.get('/:productId', (req, res, next) => {
 router.get('/', (req, res, next) => {
     const category = req.query.category;
     if (category) {
-        db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img, description FROM products WHERE category = $1 ORDER BY product_id;", [category], (err, result) => {
+        db.query("SELECT product_id, name, price, category, img, description FROM products WHERE category = $1 ORDER BY product_id;", [category], (err, result) => {
             if (err) {
                 return next(err);
             }
@@ -96,7 +97,7 @@ router.get('/', (req, res, next) => {
             res.status(200).send(result.rows);
         })
     } else {
-        db.query("SELECT product_id, name, price, category, encode(img, 'base64') AS img, description FROM products ORDER BY product_id;", [], (err, result) => {
+        db.query("SELECT product_id, name, price, category, img, description FROM products ORDER BY product_id;", [], (err, result) => {
             if (err) {
                 return next(err);
             }
@@ -138,8 +139,8 @@ router.get('/', (req, res, next) => {
  *         description: Successfully created
  */
 router.post('/new-product', (req, res, next) => {
-    const {name, price, category, description} = JSON.parse(req.body.details);
-    const img = (req.files?req.files.img:{data:''});
+    const { name, price, category, description } = JSON.parse(req.body.details);
+    const img = (req.files ? req.files.img : { data: '' });
     db.query('INSERT INTO products (name, price, category, img, description) VALUES ($1, $2, $3, $4, $5);', [name, Number(price), category, img.data || '', description], (err, result) => {
         if (err) {
             return next(err);
@@ -202,7 +203,7 @@ router.put('/update-product/:productId', async (req, res, next) => {
                 res.status(200).send('Updated successfully!');
             })
         } else {
-            res.status(404).send('No product found!');
+            res.status(404).send({ error: 'No product found!' });
         }
     })
 });
@@ -243,7 +244,7 @@ router.delete('/delete-product/:productId', async (req, res, next) => {
                 res.status(200).send('Deleted successfully!');
             })
         } else {
-            res.status(404).send('No product found!');
+            res.status(404).send({ error: 'No product found!' });
         }
     })
 });

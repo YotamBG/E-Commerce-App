@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Counter } from './Counter';
 
 
-export function Product({ details, getCart }) {
+export function Product({ details, getCart, variable }) {
 
   const addProduct = async () => {
     try {
@@ -32,14 +32,18 @@ export function Product({ details, getCart }) {
   return (
     <>
       <Card >
-        {details.img ? <Card.Img variant="top" src={`data:image;base64,${details.img}`} style={{ maxWidth: '200px', margin: 'auto' }} /> : ''}
+        {/* {details.img ? <Card.Img variant="top" src={`data:image;base64,${details.img}`} style={{ maxWidth: '200px', margin: 'auto' }} /> : ''} */}
+        {details.img ? <Card.Img variant="top" src={details.img} style={{ maxWidth: '200px', margin: 'auto' }} /> : ''}
         <Card.Body>
           <Card.Title>{details.name}</Card.Title>
           <Card.Text>
             {details.price}$
           </Card.Text>
           {details.quantity ?
-            <Counter increase={addProduct} decrease={removeProduct} count={details.quantity} />
+            (variable ?
+              <Counter increase={addProduct} decrease={removeProduct} count={details.quantity} />
+              :
+              `Quantity: ${details.quantity}`)
             : ''}
           <br />
           <br />

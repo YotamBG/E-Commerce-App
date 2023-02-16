@@ -9,19 +9,21 @@ import { NavBar } from './components/NavBar';
 import { Cart } from './pages/Cart';
 import { ProductList } from './pages/ProductList';
 import { Profile } from './pages/Profile';
-import { Orders } from './pages/Orders';
+import { OrdersList } from './pages/OrdersList';
+import { OrderDetails } from './pages/OrderDetails';
 import { Home } from './pages/Home';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { ProductUpload } from './pages/ProductUpload';
 import { ProductDetails } from './pages/ProductDetails';
 import { useEffect, useState } from "react";
+//require('dotenv').config({path: '../../server/.env'});
 
 
 function App() {
   const [user, setUser] = useState({});
 
-  const getUser = async () => {
+  const getUser = async () => { //check for user in the frontend instead of sending requestto backend?
     try {
       const response = await fetch("http://localhost:3000/users/profile", { credentials: 'include' });
       const jsonData = await response.json();
@@ -47,11 +49,12 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="productList" element={<ProductList />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="orders" element={<Orders />} />
+          <Route path="ordersList" element={<OrdersList />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="productUpload" element={<ProductUpload />} />
-          <Route path="productDetails/:id" element={<ProductDetails />} />
+          <Route path="productDetails/:id" element={<ProductDetails user={user} />} />
+          <Route path="orderDetails/:id" element={<OrderDetails user={user} />} />
         </Routes>
       </BrowserRouter>
     </div>

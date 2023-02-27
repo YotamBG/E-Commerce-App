@@ -53,7 +53,7 @@ router.use((req, res, next) => {
             }
         })
     } else {
-        console.log('Cart already attached'); //since the only data saved between calls is the user.id, you'd never get here.
+        console.log('Cart already attached'); //since the only data saved between calls is the user.id, you'd never get here. => we got here hahahh
         next();
     }
 });

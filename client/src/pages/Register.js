@@ -13,7 +13,7 @@ export function Register() {
     console.log({ "username": username, "password": password });
     try {
       const body = { "username": username, "password": password };
-      const response = await fetch("http://localhost:3000/users/register", {
+      const response = await fetch(process.env.REACT_APP_SERVER_URL+"/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -27,7 +27,7 @@ export function Register() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', paddingTop: 60, color: 'rgb(243, 189, 117)', textShadow: '0px 2px 2px rgb(0 0 0 / 80%)' }}>
       <h1 style={{ margin: '20px' }}>Register</h1>
       <Container style={{ width: '50%' }}>
         <Form onSubmit={onSubmitForm}>
@@ -48,11 +48,11 @@ export function Register() {
         <br />
 
 
-        <a href="http://localhost:3000/auth/google">
-          <img src='https://cdn-icons-png.flaticon.com/512/145/145804.png' style={{ width: '50px', margin: '20px' }} />
+        <a href={`${process.env.REACT_APP_SERVER_URL}/auth/google`}>
+          <img src='https://cdn-icons-png.flaticon.com/512/145/145804.png' style={{ width: '50px', margin: '20px', filter: 'drop-shadow(rgba(0, 0, 0, 0.5) 20px 20px 20px) grayscale(100%) invert(0%) sepia(47%) saturate(383%) hue-rotate(331deg)' }} />
         </a>
-        <a href="http://localhost:3000/auth/facebook">
-          <img src='https://cdn-icons-png.flaticon.com/512/145/145802.png' style={{ width: '50px', margin: '20px' }} />
+        <a href={`${process.env.REACT_APP_SERVER_URL}/auth/facebook`}>
+          <img src='https://cdn-icons-png.flaticon.com/512/145/145802.png' style={{ width: '50px', margin: '20px', filter: 'drop-shadow(rgba(0, 0, 0, 0.5) 20px 20px 20px) grayscale(100%) invert(0%) sepia(47%) saturate(383%) hue-rotate(331deg)' }} />
         </a>
         <br /><br /><br />
         <Link to="/login" className='btn btn-success'>Login instead</Link>

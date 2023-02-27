@@ -18,11 +18,11 @@ export function ProductUpload() {
   const handleSubmission = () => {
     const formData = new FormData();
 
-    formData.append('img', selectedFile);
+    formData.append('img', selectedFile); //change to URL
     formData.append('details', JSON.stringify({ 'name': name, 'price': price, 'category': category, 'description': description }));
 
     fetch(
-      'http://localhost:3000/products/new-product',
+      process.env.REACT_APP_SERVER_URL+'/products/new-product',
       {
         method: 'POST',
         body: formData,

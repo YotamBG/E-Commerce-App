@@ -21,11 +21,11 @@ import { useEffect, useState } from "react";
 
 
 function App() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({});  
 
   const getUser = async () => { //check for user in the frontend instead of sending requestto backend?
     try {
-      const response = await fetch("http://localhost:3000/users/profile", { credentials: 'include' });
+      const response = await fetch(process.env.REACT_APP_SERVER_URL+"/users/profile", { credentials: 'include' });
       const jsonData = await response.json();
       console.log(jsonData);
       if (response.status == 200) {
@@ -36,20 +36,20 @@ function App() {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { //use this user instead of fetching it in each page?
     getUser();
   }, []);
 
   return (
-    <div className="App">
+    <div className="App" style={{ backgroundSize: 'cover', backgroundRepeat: 'no-repeat', overflow: 'hidden' }}>
       <BrowserRouter>
-        <NavBar user={user} />
+        <NavBar user={user} />        
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="cart" element={<Cart />} />
+          <Route path="/" element={<Home user={user} />} />
+          <Route path="cart" element={<Cart user={user} />} />
           <Route path="productList" element={<ProductList />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="ordersList" element={<OrdersList />} />
+          <Route path="profile" element={<Profile user={user}/>} />
+          <Route path="ordersList" element={<OrdersList user={user}/>} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="productUpload" element={<ProductUpload />} />

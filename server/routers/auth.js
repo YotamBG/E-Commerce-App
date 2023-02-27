@@ -17,7 +17,7 @@ router.get(
     "/google/callback",
     passport.authenticate("google", { session: true }),
     (req, res) => {
-      res.redirect("http://localhost:3001/");
+      res.redirect(process.env.CLIENT_URL);
     }
   );
 
@@ -30,7 +30,7 @@ router.get(
     "/facebook/callback",
     passport.authenticate("facebook", { session: true }),
     (req, res) => {
-      res.redirect("http://localhost:3001/");
+      res.redirect(process.env.CLIENT_URL);
     }
   );
 

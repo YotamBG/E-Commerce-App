@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Order } from '../components/Order';
 
-export function OrdersList() {
+export function OrdersList({user}) {
   const [orders, setOrders] = useState([]);
 
   const getOrders = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/orders/`, { credentials: 'include' });
+      const response = await fetch(process.env.REACT_APP_SERVER_URL+`/orders/`, { credentials: 'include' });
       const jsonData = await response.json();
       console.log(jsonData);
       setOrders(jsonData);
@@ -16,11 +16,15 @@ export function OrdersList() {
   };
 
   useEffect(() => {
+    if(!user.username){
+      console.log('gotcha!');
+      window.location = "/login";
+    }
     getOrders();
   }, []);
 
   return (
-    <div>
+    <div style={{paddingTop: 60, color: 'rgb(243, 189, 117)', textShadow: '0px 2px 2px rgb(0 0 0 / 80%)'}}>
       <h1>Orders</h1>
       <br />
       <div>

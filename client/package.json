@@ -1,5 +1,7 @@
 {
-  "name": "client",
+  "name": "hostinger-react",
+  "homepage": "https://healthy-harvest-pern.com/",
+  "description": "Healthy Harvest Pern",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

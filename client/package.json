@@ -1,9 +1,8 @@
 {
   "name": "hostinger-react",
-  "homepage": "https://healthy-harvest-pern.com/",
+  "homepage": ".",
   "description": "Healthy Harvest Pern",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@react-spring/parallax": "^9.6.1",
     "@testing-library/jest-dom": "^5.16.5",

@@ -82,7 +82,7 @@ app.use('/github', (req, res)=>{ //verify signature and secret
             		}
         	});
 	}
-	res.send('Recived ' + eventName + '!');	
+	res.send('Recived !');	
 });
 
 // // move to utils

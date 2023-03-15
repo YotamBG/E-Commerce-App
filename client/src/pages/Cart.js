@@ -22,10 +22,10 @@ export function Cart({ user }) {
   };
 
   useEffect(() => {
-    if (!user.username) {
-      console.log('gotcha!');
-      window.location = "/login";
-    }
+    // if (!user.username) {
+    //   console.log('gotcha!');
+    //   window.location = "/login";
+    // }
     getCart();
   }, []);
 

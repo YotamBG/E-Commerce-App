@@ -186,3 +186,7 @@ a.active {
   background-color: #ece0c9 !important;
   border: none !important;
 }
+
+.navbar-toggler:focus{
+  box-shadow: none !important;
+}

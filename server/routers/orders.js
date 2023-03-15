@@ -62,10 +62,10 @@ const checkAuthenticated = require('../utils/checkAuthenticated');
  *         description: Order not found
  */
 router.get('/:orderId', async (req, res, next) => { //use user_id instead
-    const order_id = req.params.orderId;
+    const order_id = parseInt(req.params.orderId);
     
     const items = (await db.query(`
-            SELECT products.product_id,	products.name, products.img, products.price,	products.category, products_in_order.quantity
+            SELECT products.product_id,	products.name, products.img, products.price, products.category, products_in_order.quantity
             FROM products_in_order
             JOIN products
                 ON products_in_order.product_id = products.product_id

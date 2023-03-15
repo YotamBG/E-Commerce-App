@@ -18,12 +18,12 @@ export function Profile({ user }) {
     }
   };
 
-  useEffect(() => {
-    if (!user.username) {
-      console.log('gotcha!');
-      window.location = "/login";
-    }
-  }, []);
+  // useEffect(() => {
+  //   // if (!user.username) {
+  //   //   console.log('gotcha!');
+  //   //   window.location = "/login";
+  //   // }
+  // }, []);
 
   return (
     <div style={{ paddingTop: 60 }}>

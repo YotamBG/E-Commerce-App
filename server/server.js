@@ -70,6 +70,21 @@ const auth = require('./routers/auth');
 app.use('/auth', auth);
 
 
+const { exec } = require('child_process');
+app.use('/github', (req, res) => { //verify signature and secret
+  const { hook } = req.body;
+  const eventName = hook.events[0];
+  if (eventName == 'push') {
+    var deploy = exec('sh log.sh', (error, stdout, stderr) => { //switch to deploy, add pull to deploy
+      console.log(stdout);
+      console.log(stderr);
+      if (error !== null) {
+        console.log(`exec error: ${error}`);
+      }
+    });
+  }
+  res.send('Recived ' + eventName + '!');
+});
 
 // // move to utils
 
@@ -119,20 +134,6 @@ app.use('/auth', auth);
 // };
 
 // getImages();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   // try {

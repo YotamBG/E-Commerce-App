@@ -61,7 +61,7 @@ router.use((req, res, next) => {
 
 
 router.use((req, res, next) => {
-    const { cartId } = req.user;
+    const cartId = parseInt(req.user.cartId);
     db.query(`SELECT SUM(products_in_cart.quantity*products.price)
               FROM products_in_cart
               JOIN products
